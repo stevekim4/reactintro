@@ -1,41 +1,21 @@
-import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./routes/home";
+import Detail from "./routes/Detail";
 
 function App() {
-  const [loading, setLoading] = useState(true);
-  const [movies, setMovies] = useState([]);
-  const getMovies = async () => {
-    const json = await (
-      await fetch(
-        "https://yts.mx/api/v2/list_movies.json?minimum_rating=9&sort_by=year"
-      )
-    ).json();
-    setMovies(json.data.movies);
-    setLoading(false);
-  };
-  useEffect(() => {
-    getMovies();
-  }, []);
-  console.log(movies);
   return (
-    <div>
-      {loading ? (
-        <h1>Loading</h1>
-      ) : (
-        movies.map((movie) => (
-          <div key={movie.id}>
-            <img src={movie.medium_cover_image} />
-            <h2>{movie.title}</h2>
-            <p>{movie.summary}</p>
-            <ul>
-              {movie.genres.map((g) => (
-                <li key={g}>{g}</li>
-              ))}
-            </ul>
-          </div>
-        ))
-      )}
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/hello" element={<h1>hello !</h1>}></Route>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/movie" element={<Detail />}></Route>
+      </Routes>
+    </Router>
   );
 }
+
+// BrowserRouter : just like browser URL
+// HashRouter : add # in between .. looks a little different
+// Link is going to move user without refreshing the browser
 
 export default App;
